@@ -18,7 +18,7 @@ test("able to set name using constructor", () => {
 test("set ID by constructor ", () => {
     // check ID
     const id = 1234;
-    const id = new Employee(id);
+    const employee = new Employee("someName",id);
     expect(employee.id).toBe(id);
 });
 
