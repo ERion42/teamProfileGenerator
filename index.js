@@ -8,17 +8,41 @@ const writeFileAsync = util.promisify(fs.writeFile);
 // Input Function
 // Do While Loop
 
+    const promptUserMembers = () => {
+        return inquirer.prompt([
+            {
+                type: "input",
+                name: "quantity",
+                message: "Number of Team Members: "
+            }
+        ]
+    )};
+
     const promptUser = () => {
         return inquirer.prompt([
             {
                 type: 'input',
                 name: 'team',
-                message: "Team Name: "
+                message: "Team Name: ",
+                // This answer is required
+                validate: function(answer) {
+                if (answer.length < 1) {
+                    return console.log("Please put in a valid response.");
+                }
+                return true;
+                }        
             },
             {
                 type: 'input',
                 name: 'name',
-                message: "Member's Name: "
+                message: "Member's Name: ",
+                // This answer is required
+                validate: function(answer) {
+                    if (answer.length < 1) {
+                        return console.log("Please put in a valid response.");
+                    }
+                    return true;
+                    }                    
             },
             {
                 type: 'list',
@@ -31,14 +55,29 @@ const writeFileAsync = util.promisify(fs.writeFile);
             {
                 type: 'input',
                 name: 'id',
-                message: "Member's ID Number: "
+                message: "Member's ID Number: ",
+                // This answer is required
+                validate: function(answer) {
+                    if (answer.length < 1) {
+                        return console.log("Please put in a valid response.");
+                    }
+                    return true;
+                    }                    
             },
 
             {
                 type: 'input',
                 name: 'email',
-                message: "Member's Email Address: "
+                message: "Member's Email Address: ",
+                // This answer is required
+                validate: function(answer) {
+                    if (answer.length < 1) {
+                        return console.log("Please put in a valid response.");
+                    }
+                    return true;
+                    }    
             },
+
         ])
     };
 
@@ -125,6 +164,7 @@ const writeFileAsync = util.promisify(fs.writeFile);
     
 
     const init = () => {
+        promptUserMembers();
         promptUser()
         .then((answers) => writeFileAsync('index.html', generateHTML(answers)))
         .then(() => console.log('Successfully wrote dat file'))
