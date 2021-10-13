@@ -1,23 +1,15 @@
 // Establish necessary variables
 const inquirer = require('inquirer');
 const fs = require('fs');
-const util = require('util');
+const Manager = require('./lib/Manager')
+const Engineer = require('./lib/Engineer')
+const Intern = require('./lib/Intern')
 
 const writeFileAsync = util.promisify(fs.writeFile);
 
 // Input Function
-// Do While Loop
 
-    const promptUserMembers = () => {
-        return inquirer.prompt([
-            {
-                type: "input",
-                name: "quantity",
-                message: "Number of Team Members: "
-            }
-        ]
-    )};
-
+    // User inputs member information
     const promptUser = () => {
         return inquirer.prompt([
             {
@@ -164,9 +156,8 @@ const writeFileAsync = util.promisify(fs.writeFile);
     
 
     const init = () => {
-        promptUserMembers();
         promptUser()
-        .then((answers) => writeFileAsync('index.html', generateHTML(answers)))
+        .then((answers) => writeFileAsync('./dist/index.html', generateHTML(answers)))
         .then(() => console.log('Successfully wrote dat file'))
         .catch((err) => console.error(err));
     };
