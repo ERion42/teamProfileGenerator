@@ -170,7 +170,7 @@ const addEngineer = () => {
         // Engineer GitHub
         {
             type: 'input',
-            name: 'miscAnswer',
+            name: 'gitHub',
             message: "Engineer's GitHub Link: ",
             // This answer is required
             validate: function(answer) {
@@ -183,7 +183,7 @@ const addEngineer = () => {
     // Next Function
     ]).then(answers => {
         // create new class for answered questions
-        const engineer = new Engineer(answers.engineerName, answers.engineerID, answers.engineerEmail, "GitHub: " + answers.miscAnswer, "Engineer".role);
+        const engineer = new Engineer(answers.engineerName, answers.engineerID, answers.engineerEmail, answers.gitHub, "Engineer".role);
         // add new class to teamArray
         teamArray.push(engineer);        
         console.log("Thank you for entering that engineer's data!");
@@ -235,7 +235,7 @@ const addIntern = () => {
         // Intern's school
         {
             type: 'input',
-            name: 'miscAnswer',
+            name: 'school',
             message: "Intern's School: ",
             // This answer is required
             validate: function(answer) {
@@ -248,7 +248,7 @@ const addIntern = () => {
     // Next Function
     ]).then(answers => {
         // create new class for answered questions
-        const intern = new Intern(answers.internName, answers.internID, answers.internEmail, "School: " + answers.miscAnswer, "Intern".role);
+        const intern = new Intern(answers.internName, answers.internID, answers.internEmail, answers.school, "Intern".role);
         // add new class to teamArray
         teamArray.push(intern);     
         console.log("Thank you for entering that intern's data!");
@@ -396,18 +396,29 @@ function writeHTML() {
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">ID: ${teamArray[i].id}</li>
                         <li class="list-group-item">Email: ${teamArray[i].email}</li>
-                        <li class="list-group-item">${teamArray[i].miscAnswer}</li>
-                    </ul>
-                </section>
-            </div>  
-        `
-        )
-    };
+        `)
+        if (teamArray[i].role == "Engineer") {
+            fs.appendFileSync('./dist/index.html',
+            `
+                        <li class="list-group-item">GitHub: ${teamArray[i].gitHub}</li>
+                        </ul>
+                    </section>
+                </div>              
+            `            
+        )} else if (teamArray[i].role == "Intern") {
+            fs.appendFileSync('./dist/index.html',
+            `
+                        <li class="list-group-item">School: ${teamArray[i].school}</li>
+                        </ul>
+                    </section>
+                </div>               
+            `
+            )}
+        }
 
     // write rest of html
     fs.appendFileSync('./dist/index.html',
     `
-        </div>
             </section>
         </section>
     
@@ -420,15 +431,12 @@ function writeHTML() {
 
 function endProgram() {
     fs.writeFileSync('./dist/index.html', writeHTML(teamArray));
-    // console.log(teamArray);
+    console.log(teamArray);
 }
 
 const init = () => {
     // nameTeam();
     createManager();
-    // addMember();
-    // addIntern();
-    // addEngineer();
     // generateHTML()
     //     .then((answers) => writeFileAsync('./dist/index.html', generateHTML(answers)))
     //     .then(() => console.log('Successfully wrote dat file'))
