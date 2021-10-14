@@ -170,7 +170,7 @@ const addEngineer = () => {
         // Engineer GitHub
         {
             type: 'input',
-            name: 'engineerGitHub',
+            name: 'miscAnswer',
             message: "Engineer's GitHub Link: ",
             // This answer is required
             validate: function(answer) {
@@ -183,7 +183,7 @@ const addEngineer = () => {
     // Next Function
     ]).then(answers => {
         // create new class for answered questions
-        const engineer = new Engineer(answers.engineerName, answers.engineerID, answers.engineerEmail, answers.engineerGitHub, "Engineer".role);
+        const engineer = new Engineer(answers.engineerName, answers.engineerID, answers.engineerEmail, "GitHub: " + answers.miscAnswer, "Engineer".role);
         // add new class to teamArray
         teamArray.push(engineer);        
         console.log("Thank you for entering that engineer's data!");
@@ -235,7 +235,7 @@ const addIntern = () => {
         // Intern's school
         {
             type: 'input',
-            name: 'internSchool',
+            name: 'miscAnswer',
             message: "Intern's School: ",
             // This answer is required
             validate: function(answer) {
@@ -248,7 +248,7 @@ const addIntern = () => {
     // Next Function
     ]).then(answers => {
         // create new class for answered questions
-        const intern = new Intern(answers.internName, answers.internID, answers.internEmail, answers.internSchool, "Intern".role);
+        const intern = new Intern(answers.internName, answers.internID, answers.internEmail, "School: " + answers.miscAnswer, "Intern".role);
         // add new class to teamArray
         teamArray.push(intern);     
         console.log("Thank you for entering that intern's data!");
@@ -360,17 +360,13 @@ function writeHTML() {
             <h1>My Team</h1>
         </header>
     
-    `
-    );
-    fs.appendFileSync('./dist/index.html',
-    `
     <section class="container">
         <section class="row">
             <!-- Manager card -->
             <div class="col-md" style="margin: 5px;">
                 <section class="card">
                     <section class="card-header" style="background-color: blue; color: white;">
-                        <h1>${teamArray[0].name}</h1>
+                        <h1>${teamArray[0].name} </h1>
                         <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cup" viewBox="0 0 16 16">
                             <path d="M1 2a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v1h.5A1.5 1.5 0 0 1 16 4.5v7a1.5 1.5 0 0 1-1.5 1.5h-.55a2.5 2.5 0 0 1-2.45 2h-8A2.5 2.5 0 0 1 1 12.5V2zm13 10h.5a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.5-.5H14v8zM13 2H2v10.5A1.5 1.5 0 0 0 3.5 14h8a1.5 1.5 0 0 0 1.5-1.5V2z"/>
                             </svg>  ${teamArray[0].role}</p>
@@ -380,11 +376,11 @@ function writeHTML() {
                         <li class="list-group-item">Email: ${teamArray[0].email}</li>
                         <li class="list-group-item">Office Number: ${teamArray[0].officeNumber}</li>
                     </ul>
-                </section>
-            </div>        
+            </section>
+        </div>        
     `
     );
-    // do a loop of remaining array values
+    do a loop of remaining array values
     for (i = 1; i < teamArray.length; i++) {
         fs.appendFileSync('./dist/index.html',
         `
@@ -402,17 +398,29 @@ function writeHTML() {
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">ID: ${teamArray[i].id}</li>
                         <li class="list-group-item">Email: ${teamArray[i].email}</li>
-                        <li class="list-group-item">Office Number: ${teamArray[i].officeNumber}</li>
+                        <li class="list-group-item">${teamArray[i].miscAnswer}</li>
                     </ul>
                 </section>
             </div>  
         `
         )
-    }
+    };
+
+    // write rest of html
+    fs.appendFileSync('./dist/index.html',
+    `
+            </section>
+        </section>
+    
+    
+    </body>
+    </html>    
+    `
+    )
 }
 
 function endProgram() {
-    // fs.writeFileSync('./dist/index.html', writeHTML(teamArray));
+    fs.writeFileSync('./dist/index.html', writeHTML(teamArray));
     console.log(teamArray);
 }
 
