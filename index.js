@@ -6,27 +6,31 @@ const Engineer = require('./lib/Engineer')
 const Intern = require('./lib/Intern')
 const util = require('util');
 
+const teamArray = [];
+
 const writeFileAsync = util.promisify(fs.writeFile);
 
 // Input Functions
-// Create Team Name
-const nameTeam = () => {
-    return inquirer.prompt([
-        {
-            type: 'input',
-            name: 'teamName',
-            message: "What is the name of your team?",
-            // This answer is required
-            validate: function(answer) {
-                if (answer.length < 1) {
-                    return console.log("Please put in a valid response.");
-                }
-                return true;
-                }     
-        }
-    ])
-    .then(addMember());
-}
+
+// Create Team Name - Does not work at the moment, will go back later and add in as time permits
+// const nameTeam = () => {
+//     return inquirer.prompt([
+//         {
+//             type: 'input',
+//             name: 'teamName',
+//             message: "What is the name of your team?",
+//             // This answer is required
+//             validate: function(answer) {
+//                 if (answer.length < 1) {
+//                     return console.log("Please put in a valid response.");
+//                 }
+//                 return true;
+//                 }     
+//         }
+//     ])
+//     .then(addMember());
+// }
+
 // Add Manager
 const createManager = () => {
     inquirer.prompt([
@@ -82,8 +86,10 @@ const createManager = () => {
                 return true;
                 }    
         },
-    
-    ])
+    ]).then(answers => {
+        console.log("Thank you for entering the manager's data!");
+        addMember();
+    })
 }
 
 // Add another member to the team?
@@ -97,8 +103,21 @@ const addMember = () => {
                 'Engineer', 'Intern', 'Finished Adding Members'
             ],
         }
-    ])
-}
+    ]).then(answers => {
+        switch(answers.memberAdd) {
+            case "Engineer":
+                addEngineer();
+                break;
+            case "Intern":
+                addIntern();
+                break;
+            default:
+                console.log("Thank you for entering your team's data... creating file now.");
+                generateHTML();
+        }
+        })
+    }
+
     
 // User inputs member information
 const addEngineer = () => {
@@ -155,7 +174,10 @@ const addEngineer = () => {
                 return true;
                 }    
         },
-    ])
+    ]).then(answers => {
+        console.log("Thank you for entering that engineer's data!");
+        addMember();
+    })
 };
 
 const addIntern = () => {
@@ -212,7 +234,10 @@ const addIntern = () => {
                 return true;
                 }    
         }
-    ])
+    ]).then(answers => {
+        console.log("Thank you for entering that intern's data!");
+        addMember();
+    })
 };
 
 // Write HTML
@@ -298,8 +323,8 @@ const generateHTML = (answers) =>
 
 
 const init = () => {
-    nameTeam();
-    // createManager();
+    // nameTeam();
+    createManager();
     // addMember();
     // addIntern();
     // addEngineer();
